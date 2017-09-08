@@ -1,0 +1,9 @@
+# Initial Commit taken from Prof P Kurur. 
+# @https://bitbucket.org/piyush-kurur/compilers/src
+
+.cm
+*.grm.desc
+*.grm.sig
+*.grm.sml
+*.lex.sml
+*.x86-linux
