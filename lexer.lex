@@ -11,7 +11,6 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 %%
 \n	=> (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
 ","	=> (Tokens.COMMA(yypos,yypos+1));
-"123"	=> (Tokens.INT(123,yypos,yypos+3));
 "IF"    => (Tokens.IF(yypos,yypos+2));
 "BREAK"	=> (Tokens.BREAK(yypos, yypos+5));
 "OR"	=> (Tokens.OR(yypos, yypos+2));
