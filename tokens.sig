@@ -29,6 +29,8 @@ val MINUS:  pos * pos -> token
 val PLUS:  pos * pos -> token
 val RPAREN:  pos * pos -> token
 val LPAREN:  pos * pos -> token
+val RBRACE:  pos * pos -> token
+val LBRACE:  pos * pos -> token
 val COMMA:  pos * pos -> token
 val BLANK:  pos * pos -> token
 val SEMICOLON:  pos * pos -> token

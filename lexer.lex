@@ -33,9 +33,10 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 "TIMES"	=> (Tokens.TIMES(yypos, yypos+5));
 "MINUS"	=> (Tokens.MINUS(yypos, yypos+5));
 "PLUS"	=> (Tokens.PLUS(yypos, yypos+4));
-"RPAREN"	=> (Tokens.RPAREN(yypos, yypos+6));
-"LPAREN"	=> (Tokens.LPAREN(yypos, yypos+6));
-"COMMA"	=> (Tokens.COMMA(yypos, yypos+4));
+")"		=> (Tokens.RPAREN(yypos, yypos+1));
+"("		=> (Tokens.LPAREN(yypos, yypos+1));
+"{"		=> (Tokens.LBRACE(yypos, yypos+1));
+"}"		=> (Tokens.RBRACE(yypos, yypos+1));
 "EOF"	=> (Tokens.EOF(yypos, yypos+3));
 [0-9]+			=> (Tokens.INT(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
 [a-z][a-z0-9_]* => (Tokens.ID(yytext, yypos, yypos + (size yytext)));
