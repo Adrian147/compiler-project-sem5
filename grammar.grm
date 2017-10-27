@@ -10,7 +10,7 @@
   | BREAK | VAR | SEMICOLON
 
 %nonterm  
-	exp | program | lval | assignment | mathop | whileloop | ifthenelse | boolop
+	exp | program | lval | assignment | mathop | whileloop | ifthenelse | boolop | stmnts
 
 %pos int
 %verbose
@@ -39,7 +39,10 @@
 
 
 
-program	: exp			()
+program	: stmnts				()
+
+stmnts: exp SEMICOLON stmnts	()
+	|exp SEMICOLON				()
 
 exp: 	ID				()
 	|	assignment		()
@@ -70,7 +73,7 @@ boolop:
 	|	exp OR exp 			()
 
 assignment:
-		ID ASSIGN ID SEMICOLON	()
+		ID ASSIGN exp		()
 
 
 
