@@ -3,14 +3,14 @@
     EOF 
   | ID of string
   | INT of int | STRING of string 
-  | COMMA | LPAREN | RPAREN 
+  | COMMA | LPAREN | RPAREN | LBRACE | RBRACE
   | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | IF | THEN | ELSE | WHILE | FOR | DO 
-  | BREAK | VAR | SEMICOLON
+  | FUNCTION | BREAK | VAR | SEMICOLON 
 
 %nonterm  
-	exp | program | lval | assignment | mathop | whileloop | ifthenelse | boolop | stmnts
+	exp | program | lval | assignment | mathop | whileloop | ifthenelse | boolop | stmnts | fundef | param
 
 %pos int
 %verbose
@@ -24,9 +24,6 @@
 
 %name foo
 
-%value ID ("bogus")
-%value INT (1)
-%value STRING ("")
 
 %nonassoc DO
 %nonassoc ELSE
@@ -45,11 +42,14 @@ stmnts: exp SEMICOLON stmnts	()
 	|exp SEMICOLON				()
 
 exp: 	ID				()
+	|	INT				()
+	|	STRING			()
 	|	assignment		()
 	|	mathop			()
 	|	whileloop		()
 	|	ifthenelse		()
 	|	boolop			()
+	|	fundef			()
 	|	BREAK			()
 
 mathop:	exp PLUS exp	()
@@ -60,7 +60,7 @@ mathop:	exp PLUS exp	()
 whileloop: WHILE exp DO exp		()
 
 ifthenelse:
-	IF exp THEN exp ELSE exp 	()
+	IF exp THEN stmnts ELSE stmnts 	()
 
 boolop: 
 		exp EQ exp 			()
@@ -75,5 +75,10 @@ boolop:
 assignment:
 		ID ASSIGN exp		()
 
-
-
+fundef:
+		FUNCTION ID LPAREN param RPAREN LBRACE stmnts RBRACE	()
+param: 
+	ID						()
+	|INT					()
+	|STRING					()
+	|COMMA param			()
