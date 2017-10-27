@@ -31,5 +31,6 @@ val RPAREN:  pos * pos -> token
 val LPAREN:  pos * pos -> token
 val COMMA:  pos * pos -> token
 val BLANK:  pos * pos -> token
+val SEMICOLON:  pos * pos -> token
 val EOF:  pos * pos -> token
 end

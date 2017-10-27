@@ -32,5 +32,6 @@ fun LPAREN(i,j) = "LPAREN   " ^ Int.toString(i)
 fun COMMA(i,j) = "COMMA   " ^ Int.toString(i)
 fun BLANK(i,j) = "BLANK   " ^ Int.toString(i)
 fun EOF(i,j) = "EOF   " ^ Int.toString(i)
+fun SEMICOLON(i,j) = "SEMICOLON   " ^ Int.toString(i)
 
 end
