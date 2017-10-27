@@ -1,6 +1,7 @@
 # Initial Commit taken from Prof P Kurur. 
 # @https://bitbucket.org/piyush-kurur/compilers/src
 
+compiler
 .cm
 *.grm.desc
 *.grm.sig
