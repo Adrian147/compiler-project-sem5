@@ -3,20 +3,30 @@
 structure Ast =
 struct
 
-type ID = string
+  type id = string
 
-datatype DataType = Int | Float | String;
+  datatype dataType = Int | Float | String
 
-datatype BinOp = Plus | Minus | Times | Divide 
-               | EQ | NEQ | LT | LE | GT | GE
-               | AND | OR;
+  datatype binOp = Plus | Minus | Times | Divide | Mod
+                 | Eq | Neq | Lt | Le | Gt | Ge
+                 | And | Or
 
-datatype UniOp = NEG | UMinus
+  datatype uniOp = Neg | UMinus
 
-(* The abstract syntax for expressions *)
-datatype Expr  = Const of int
-	           | Op    of Expr * BinOp * Expr;
+  (* The abstract syntax for expressions *)
+  datatype expr  = Const of int
+  	           | Op of expr * binOp * expr
+               | Up of uniOp * expr
 
-datatype Assignment  = VarAssn of ID * Expr
-                     | FunAssn of Function * ID list
+  datatype declaration = VarDecl of dataType * id
+
+  datatype statement = (*Sum tin wong*)
+
+  and coreStatement = VarAssn of id * expr
+                  |   While of expr * statement
+                  |   Do of expr * statement
+                  |   IfT of expr * statement
+                  |   IFTH of expr * statement * statement
+                  |   Continue
+                  |   Break
 end
