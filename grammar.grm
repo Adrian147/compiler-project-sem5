@@ -33,8 +33,8 @@
 %left PLUS MINUS
 %left TIMES DIVIDE
 
-
 %%
+
 program	: stmnts                                (Ast.Program program)
 
 stmnts: statement SEMICOLON stmnts	            (Ast.statement statement :: stmnts)
@@ -49,23 +49,23 @@ statement : ID ASSIGN expr                      (Ast.assign ID expr)
           | Continue                            (Ast.Continue)
           | Break                               (Ast.Break)
 
-expr :  INT                 (Ast.Const INT)
+expr :  INT                 (Ast.Const INT) (*Edit*)
      |  ID                  (Ast.Bool)
-     |  expr * binOp * expr (Ast.biexp exp)
+     |  expr binOp expr     (Ast.Op(expr, binOp, expr))
+     |  uniOp expr          (Ast.Up(uniOp, expr))
+     
+binOp : PLUS                (Ast.Plus)
+      | MINUS               (Ast.Minus)
+      | TIMES               (Ast.Times)
+      | DIVIDE              (Ast.Divide)
+      | MOD                 (Ast.Mod)
+      | EQ                  (Ast.Eq)
+      | NEQ                 (Ast.Neq)
+      | LT                  (Ast.Lt)
+      | LE                  (Ast.Le)
+      | GT                  (Ast.Gt)
+      | GE                  (Ast.Ge)
 
-mathop:	exp PLUS exp	()
-	|	exp MINUS exp	()
-	|	exp TIMES exp	()
-	|	exp DIVIDE exp	()
-
-
-boolop:
-		exp EQ exp 			()
-	|	exp NEQ exp			()
-	|	exp GT exp 			()
-	|	exp LT exp 			()
-	|	exp GE exp 			()
-	|	exp LE exp 			()
-	|	exp AND exp			()
-	|	exp OR exp 			()
+uniOp : NEG                 (Ast.Neg)
+      | UMINUS              (Ast.UMinus)
 
