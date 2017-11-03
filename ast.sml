@@ -19,13 +19,15 @@ struct
                | Up of uniOp * expr
 
   datatype program = Program of statement list
-
+  
+  
+  (*Allow {Compound statements ?} *)
   datatype statement  = VarAssn of id * Eq * expr
                   |     VarDecl of dataType * id
                   |     While of expr * statement
-                  |     Do of expr * statement
+                  |     DoWhile of statement * expr
                   |     IFT of expr * statement
-                  |     IFTH of expr * statement * statement
+                  |     IFTE of expr * statement * statement
                   |     Continue
                   |     Break
 end

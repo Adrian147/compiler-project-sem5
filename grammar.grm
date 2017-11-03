@@ -35,37 +35,30 @@
 
 
 %%
-program	: stmnts                    (Ast.program program)
+program	: stmnts                            (Ast.program program)
 
-stmnts: statement SEMICOLON stmnts	(Ast.statement statement :: stmnts)
-	|statement SEMICOLON				      (Ast.statement statement)
+stmnts: statement SEMICOLON stmnts	        (Ast.statement statement :: stmnts)
+	|statement SEMICOLON				    (Ast.statement statement)
 
-statement : ID ASSIGN expr          (Ast.assign ID expr)
-          | INT ID                  (Ast.decl INT ID)
-          | WHILE
-
+statement : ID ASSIGN expr                  (Ast.assign ID expr)
+          | INT ID                          (Ast.decl INT ID)
+          | WHILE expr DO stmnts            (Ast.While(expr, stmnts))(*Edit*)
+          | DO stmnts WHILE expr            (Ast.DoWhile(statement, expr))
+          | IF expr THEN stmnts             (Ast.IFT(expr, stmnts))
+          | IF exp THEN stmnts ELSE stmnts  (Ast.IFTE(expr, stmnts, stmnts))
+          | Continue                        (Ast.Continue)
+          | Break                           (Ast.Break)
 
 
 expr : 	ID				()
      |	INT				()
      |	STRING			()
-     |	assignment		()
-     |	mathop			()
-     |	whileloop		()
-     |	ifthenelse		()
-     |	boolop			()
-     |	fundef			()
-     |	BREAK			()
 
 mathop:	exp PLUS exp	()
 	|	exp MINUS exp	()
 	|	exp TIMES exp	()
 	|	exp DIVIDE exp	()
 
-whileloop: WHILE exp DO exp		()
-
-ifthenelse:
-	IF exp THEN stmnts ELSE stmnts 	()
 
 boolop:
 		exp EQ exp 			()
@@ -77,13 +70,3 @@ boolop:
 	|	exp AND exp			()
 	|	exp OR exp 			()
 
-assignment:
-		ID ASSIGN exp		()
-
-fundef:
-		FUNCTION ID LPAREN param RPAREN LBRACE stmnts RBRACE	()
-param:
-	ID						()
-	|  INT					()
-	|  STRING					()
-	|  COMMA param			()
