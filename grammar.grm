@@ -6,7 +6,7 @@
   | COMMA | LPAREN | RPAREN | LBRACE | RBRACE
   | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
-  | IF | THEN | ELSE | WHILE | FOR | DO
+  | IF | THEN | ELSE | WHILE | FOR | DO | END 
   | FUNCTION | BREAK | VAR | SEMICOLON
 
 %nonterm
@@ -35,24 +35,23 @@
 
 
 %%
-program	: stmnts                            (Ast.program program)
+program	: stmnts                                (Ast.Program program)
 
-stmnts: statement SEMICOLON stmnts	        (Ast.statement statement :: stmnts)
-	|statement SEMICOLON				    (Ast.statement statement)
+stmnts: statement SEMICOLON stmnts	            (Ast.statement statement :: stmnts)
+	|statement SEMICOLON				        (Ast.statement statement)
 
-statement : ID ASSIGN expr                  (Ast.assign ID expr)
-          | INT ID                          (Ast.decl INT ID)
-          | WHILE expr DO stmnts            (Ast.While(expr, stmnts))(*Edit*)
-          | DO stmnts WHILE expr            (Ast.DoWhile(statement, expr))
-          | IF expr THEN stmnts             (Ast.IFT(expr, stmnts))
-          | IF exp THEN stmnts ELSE stmnts  (Ast.IFTE(expr, stmnts, stmnts))
-          | Continue                        (Ast.Continue)
-          | Break                           (Ast.Break)
+statement : ID ASSIGN expr                      (Ast.assign ID expr)
+          | dataType ID                         (Ast.decl dataType ID)(*Edit*)
+          | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))(*Edit*)
+          | DO stmnts WHILE expr END            (Ast.DoWhile(statement, expr))
+          | IF expr THEN stmnts END             (Ast.IFT(expr, stmnts))
+          | IF expr THEN stmnts ELSE stmnts END  (Ast.IFTE(expr, stmnts, stmnts))
+          | Continue                            (Ast.Continue)
+          | Break                               (Ast.Break)
 
-
-expr : 	ID				()
-     |	INT				()
-     |	STRING			()
+expr :  INT                 (Ast.Const INT)
+     |  ID                  (Ast.Bool)
+     |  expr * binOp * expr (Ast.biexp exp)
 
 mathop:	exp PLUS exp	()
 	|	exp MINUS exp	()

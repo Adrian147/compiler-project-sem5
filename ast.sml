@@ -14,9 +14,10 @@ struct
   datatype uniOp = Neg | UMinus
 
   (* The abstract syntax for expressions *)
-  datatype expr  = Const of int
-  	           | Op of expr * binOp * expr
-               | Up of uniOp * expr
+  datatype expr  = Const
+                 | Bool
+  	             | Op of expr * binOp * expr
+                 | Up of uniOp * expr
 
   datatype program = Program of statement list
   
