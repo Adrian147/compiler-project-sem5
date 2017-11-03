@@ -1,16 +1,17 @@
 %%
 %term
-    EOF 
+    EOF
   | ID of string
-  | INT of int | STRING of string 
+  | INT of int | STRING of string
   | COMMA | LPAREN | RPAREN | LBRACE | RBRACE
   | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
-  | IF | THEN | ELSE | WHILE | FOR | DO 
-  | FUNCTION | BREAK | VAR | SEMICOLON 
+  | IF | THEN | ELSE | WHILE | FOR | DO
+  | FUNCTION | BREAK | VAR | SEMICOLON
 
-%nonterm  
-	exp | program | lval | assignment | mathop | whileloop | ifthenelse | boolop | stmnts | fundef | param
+%nonterm
+	statement | program | lval | assignment | mathop | whileloop | ifthenelse
+  | boolop | stmnts | fundef | param
 
 %pos int
 %verbose
@@ -18,12 +19,11 @@
 %eop EOF
 %noshift EOF
 
-%keyword WHILE FOR BREAK VAR IF THEN ELSE 
+%keyword WHILE FOR BREAK VAR IF THEN ELSE
 
 %prefer THEN ELSE LPAREN
 
 %name foo
-
 
 %nonassoc DO
 %nonassoc ELSE
@@ -32,25 +32,30 @@
 %nonassoc EQ NEQ LT GT LE GE
 %left PLUS MINUS
 %left TIMES DIVIDE
+
+
 %%
+program	: stmnts                    (Ast.program program)
+
+stmnts: statement SEMICOLON stmnts	(Ast.statement statement :: stmnts)
+	|statement SEMICOLON				      (Ast.statement statement)
+
+statement : ID ASSIGN expr          (Ast.assign ID expr)
+          | INT ID                  (Ast.decl INT ID)
+          | WHILE
 
 
 
-program	: stmnts				()
-
-stmnts: exp SEMICOLON stmnts	()
-	|exp SEMICOLON				()
-
-exp: 	ID				()
-	|	INT				()
-	|	STRING			()
-	|	assignment		()
-	|	mathop			()
-	|	whileloop		()
-	|	ifthenelse		()
-	|	boolop			()
-	|	fundef			()
-	|	BREAK			()
+expr : 	ID				()
+     |	INT				()
+     |	STRING			()
+     |	assignment		()
+     |	mathop			()
+     |	whileloop		()
+     |	ifthenelse		()
+     |	boolop			()
+     |	fundef			()
+     |	BREAK			()
 
 mathop:	exp PLUS exp	()
 	|	exp MINUS exp	()
@@ -62,7 +67,7 @@ whileloop: WHILE exp DO exp		()
 ifthenelse:
 	IF exp THEN stmnts ELSE stmnts 	()
 
-boolop: 
+boolop:
 		exp EQ exp 			()
 	|	exp NEQ exp			()
 	|	exp GT exp 			()
@@ -77,8 +82,8 @@ assignment:
 
 fundef:
 		FUNCTION ID LPAREN param RPAREN LBRACE stmnts RBRACE	()
-param: 
+param:
 	ID						()
-	|INT					()
-	|STRING					()
-	|COMMA param			()
+	|  INT					()
+	|  STRING					()
+	|  COMMA param			()

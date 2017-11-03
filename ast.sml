@@ -18,15 +18,18 @@ struct
   	           | Op of expr * binOp * expr
                | Up of uniOp * expr
 
-  datatype declaration = VarDecl of dataType * id
+  datatype program = Program of statement list
 
-  datatype statement = (*Sum tin wong*)
-
-  and coreStatement = VarAssn of id * expr
-                  |   While of expr * statement
-                  |   Do of expr * statement
-                  |   IfT of expr * statement
-                  |   IFTH of expr * statement * statement
-                  |   Continue
-                  |   Break
+  datatype statement  = VarAssn of id * Eq * expr
+                  |     VarDecl of dataType * id
+                  |     While of expr * statement
+                  |     Do of expr * statement
+                  |     IFT of expr * statement
+                  |     IFTH of expr * statement * statement
+                  |     Continue
+                  |     Break
 end
+
+
+fun assign a b = VarAssn(ID(a), Eq, b)
+fun decl   a b = VarDecl(a, b)
