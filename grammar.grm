@@ -8,7 +8,7 @@
   | UMINUS | NEG
   | TRUE | FALSE
   | IF | THEN | ELSE | WHILE | FOR | DO | END
-  | FUNCTION | BREAK | CONTINUE | VAR | SEMICOLON
+  | BREAK | CONTINUE | SEMICOLON
 
 %nonterm program of Ast.program
        | stmnts of Ast.statement list
@@ -24,7 +24,7 @@
 %eop EOF
 %noshift EOF
 
-%keyword WHILE FOR BREAK VAR IF THEN ELSE
+%keyword WHILE FOR BREAK IF THEN ELSE
 
 %prefer THEN ELSE
 
@@ -40,7 +40,7 @@
 
 %%
 
-program	: stmnts                                (Ast.Program stmnts)
+program	: stmnts  EOF                           (Ast.Program stmnts)
 
 stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
 	   | statement SEMICOLON				    ([statement])
@@ -75,5 +75,5 @@ binOp : PLUS                (Ast.Plus)
 uniOp : NEG                 (Ast.Neg)
       | UMINUS              (Ast.UMinus)
 
-dataType : NUM              (Ast.Int)
+dataType : INT              (Ast.Int)
          | STRING           (Ast.String)
