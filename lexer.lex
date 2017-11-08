@@ -1,3 +1,4 @@
+structure Tokens = Tokens
 type pos = int
 type lexresult = Tokens.token
 
@@ -8,7 +9,9 @@ fun err(p1,p2) = ErrorMsg.error p1
 fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 
 %%
+%header (functor FooLexFun(structure Tokens: Foo_TOKENS));
 %%
+
 \n	=> (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
 ","	=> (Tokens.COMMA(yypos,yypos+1));
 ";"	=> (Tokens.SEMICOLON(yypos,yypos+1));

@@ -1,9 +1,13 @@
-
 $(SML_LIB)/basis/basis.mlb
 $(SML_LIB)/basis/unsafe.mlb
+$(SML_LIB)/mlyacc-lib/mlyacc-lib.mlb
 
+ast.sml
 tokens.sig
 tokens.sml
 lexerr.sml
+grammar.grm.sig
+grammar.grm.sml
 lexer.lex.sml
 main.sml
+parse.sml
