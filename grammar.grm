@@ -10,9 +10,13 @@
   | IF | THEN | ELSE | WHILE | FOR | DO | END
   | FUNCTION | BREAK | CONTINUE | VAR | SEMICOLON
 
-%nonterm
-	statement | program | whileloop | ifthenelse
- | stmnts | fundef | param | binOp | uniOp | expr | dataType
+%nonterm program of Ast.program
+       | stmnts of Ast.statement list
+       | statement of Ast.statement
+       | expr of Ast.expr
+       | binOp of Ast.binOp
+       | uniOp of Ast.uniOp
+       | dataType of Ast.dataType
 
 %pos int
 %verbose
@@ -36,21 +40,21 @@
 
 %%
 
-program	: stmnts                                (Ast.Program program)
+program	: stmnts                                (Ast.Program stmnts)
 
-stmnts : statement SEMICOLON stmnts	            (Ast.statement statement :: stmnts)
-	     | statement SEMICOLON				            (Ast.statement statement)
+stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
+	   | statement SEMICOLON				    ([statement])
 
-statement : ID ASSIGN expr                      (Ast.assign ID expr)
-          | dataType ID                         (Ast.decl dataType ID)
+statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
+          | dataType ID                         (Ast.VarDecl(dataType, Ast.ID ID))
           | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))
-          | DO stmnts WHILE expr END            (Ast.DoWhile(statement, expr))
+          | DO stmnts WHILE expr END            (Ast.DoWhile(stmnts, expr))
           | IF expr THEN stmnts END             (Ast.IFT(expr, stmnts))
           | IF expr THEN stmnts ELSE stmnts END (Ast.IFTE(expr, stmnts, stmnts))
           | CONTINUE                            (Ast.Continue)
           | BREAK                               (Ast.Break)
 
-expr : ID                  (Ast.Const NUM)
+expr : NUM                 (Ast.Const NUM)
      | TRUE                (Ast.Bool)
      | FALSE               (Ast.Bool)
      | expr binOp expr     (Ast.Op(expr, binOp, expr))

@@ -13,26 +13,26 @@ struct
   datatype uniOp = Neg | UMinus
 
   (* The abstract syntax for expressions *)
-  datatype expr  = Const
+  datatype expr  = Id of id
+                 | Const of int
                  | Bool
   	             | Op of expr * binOp * expr
                  | Up of uniOp * expr
 
 
   (*Allow {Compound statements ?} *)
-  datatype statement  = VarAssn of id * binOp * expr
-                  |     VarDecl of dataType * id
-                  |     While of expr * stmnts
-                  |     DoWhile of stmnts * expr
-                  |     IFT of expr * stmnts
-                  |     IFTE of expr * stmnts * stmnts
-                  |     Continue
-                  |     Break
-  and stmnts = Stmnts of statement list
+  datatype statement  = VarAssn of id * expr
+                      | VarDecl of dataType * id
+                      | While of expr * statement list
+                      | DoWhile of statement list * expr
+                      | IFT of expr * statement list
+                      | IFTE of expr * statement list * statement list
+                      | Continue 
+                      | Break
+                      
 
   datatype program = Program of statement list
   
-  fun assign a b = VarAssn(ID(a), Eq, b)
   fun decl   a b = VarDecl(a, b)
   
 end
