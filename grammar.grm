@@ -2,7 +2,9 @@
 %term
     EOF
   | ID of string
-  | NUM of int | STRING of string
+  | NUM of int
+  | INT 
+  | STRING
   | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | UMINUS | NEG
@@ -40,7 +42,7 @@
 
 %%
 
-program	: stmnts  EOF                           (Ast.Program stmnts)
+program	: stmnts                                 (Ast.Program stmnts)
 
 stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
 	   | statement SEMICOLON				    ([statement])

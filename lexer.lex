@@ -1,6 +1,9 @@
 structure Tokens = Tokens
+
 type pos = int
-type lexresult = Tokens.token
+type svalue = Tokens.svalue
+type ('a,'b) token = ('a,'b) Tokens.token
+type lexresult     = (svalue,pos) token
 
 val lineNum = ErrorMsg.lineNum
 val linePos = ErrorMsg.linePos
@@ -13,7 +16,7 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 %%
 
 \n	            => (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
-[0-9]+			=> (Tokens.INT(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
+[0-9]+			=> (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
 [a-z][a-z0-9_]* => (Tokens.ID(yytext, yypos, yypos + (size yytext)));
 "break"	        => (Tokens.BREAK(yypos, yypos + 5));
 "continue"	    => (Tokens.CONTINUE(yypos, yypos + 8));

@@ -1,9 +1,9 @@
-structure Parse : sig val parse : string -> Absyn.exp end =
+structure Parse : sig val parse : string -> Ast.program end =
 struct
   structure FooLrVals = FooLrValsFun(structure Token = LrParser.Token)
   structure Lex = FooLexFun(structure Tokens = FooLrVals.Tokens)
   structure FooP = Join(structure ParserData = FooLrVals.ParserData
-			structure Lex=Lex
+			structure Lex = Lex
 			structure LrParser = LrParser)
   fun parse filename =
       let val _ = (ErrorMsg.reset(); ErrorMsg.fileName := filename)
@@ -15,3 +15,4 @@ struct
        in TextIO.closeIn file;
        absyn
       end handle LrParser.ParseError => raise ErrorMsg.Error
+end
