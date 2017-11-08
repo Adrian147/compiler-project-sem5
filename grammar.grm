@@ -2,16 +2,17 @@
 %term
     EOF
   | ID of string
-  | INT of int | STRING of string
-  | COMMA | LPAREN | RPAREN | LBRACE | RBRACE
-  | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
+  | NUM of int | STRING of string
+  | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
-  | IF | THEN | ELSE | WHILE | FOR | DO | END 
-  | FUNCTION | BREAK | VAR | SEMICOLON
+  | UMINUS | NEG
+  | TRUE | FALSE
+  | IF | THEN | ELSE | WHILE | FOR | DO | END
+  | FUNCTION | BREAK | CONTINUE | VAR | SEMICOLON
 
 %nonterm
-	statement | program | lval | assignment | mathop | whileloop | ifthenelse
-  | boolop | stmnts | fundef | param
+	statement | program | whileloop | ifthenelse
+ | stmnts | fundef | param | binOp | uniOp | expr | dataType
 
 %pos int
 %verbose
@@ -21,9 +22,9 @@
 
 %keyword WHILE FOR BREAK VAR IF THEN ELSE
 
-%prefer THEN ELSE LPAREN
+%prefer THEN ELSE
 
-%name foo
+%name Foo
 
 %nonassoc DO
 %nonassoc ELSE
@@ -37,23 +38,24 @@
 
 program	: stmnts                                (Ast.Program program)
 
-stmnts: statement SEMICOLON stmnts	            (Ast.statement statement :: stmnts)
-	|statement SEMICOLON				        (Ast.statement statement)
+stmnts : statement SEMICOLON stmnts	            (Ast.statement statement :: stmnts)
+	     | statement SEMICOLON				            (Ast.statement statement)
 
 statement : ID ASSIGN expr                      (Ast.assign ID expr)
-          | dataType ID                         (Ast.decl dataType ID)(*Edit*)
-          | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))(*Edit*)
+          | dataType ID                         (Ast.decl dataType ID)
+          | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))
           | DO stmnts WHILE expr END            (Ast.DoWhile(statement, expr))
           | IF expr THEN stmnts END             (Ast.IFT(expr, stmnts))
-          | IF expr THEN stmnts ELSE stmnts END  (Ast.IFTE(expr, stmnts, stmnts))
-          | Continue                            (Ast.Continue)
-          | Break                               (Ast.Break)
+          | IF expr THEN stmnts ELSE stmnts END (Ast.IFTE(expr, stmnts, stmnts))
+          | CONTINUE                            (Ast.Continue)
+          | BREAK                               (Ast.Break)
 
-expr :  INT                 (Ast.Const INT) (*Edit*)
-     |  ID                  (Ast.Bool)
-     |  expr binOp expr     (Ast.Op(expr, binOp, expr))
-     |  uniOp expr          (Ast.Up(uniOp, expr))
-     
+expr : ID                  (Ast.Const NUM)
+     | TRUE                (Ast.Bool)
+     | FALSE               (Ast.Bool)
+     | expr binOp expr     (Ast.Op(expr, binOp, expr))
+     | uniOp expr          (Ast.Up(uniOp, expr))
+
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)
       | TIMES               (Ast.Times)
@@ -69,3 +71,5 @@ binOp : PLUS                (Ast.Plus)
 uniOp : NEG                 (Ast.Neg)
       | UMINUS              (Ast.UMinus)
 
+dataType : NUM              (Ast.Int)
+         | STRING           (Ast.String)
