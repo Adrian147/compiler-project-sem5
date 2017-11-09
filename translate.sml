@@ -52,6 +52,7 @@ and compileStmnt(Ast.VarAssn (Ast.ID(x), y)) = x ^ " = " ^ compileExp(y) ^ ";\n"
 (*	|compileStmnt(Ast.Int) = "var "
 	|compileStmnt(Ast.String) = "var "*)
 	
+fun starttranslate((prog)) = case prog of Ast.Program(slist) => compileStmntList(slist);
 end
 
 

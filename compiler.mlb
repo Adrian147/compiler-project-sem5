@@ -7,4 +7,5 @@ lexerr.sml
 grammar.grm.sig
 grammar.grm.sml
 lexer.lex.sml
+translate.sml
 parse.sml

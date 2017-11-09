@@ -17,4 +17,5 @@ struct
       end handle LrParser.ParseError => raise ErrorMsg.Error
 end;
 
-Parse.parse "sample.txt";
+val x = Parse.parse "sample.txt";
+Translate.starttranslate(x);
