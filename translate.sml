@@ -16,4 +16,28 @@ and compileStmnt(Ast.VarAssn (x, y)) = x ^ " = " ^ compileStmnt(y) ^ ";\n"
 										compileStmntList(thstmnts) ^ " \n}\n" ^	"else\n {" ^ compileStmntList(elstmnts) ^ "}"
 	|compileStmnt(Ast.Continue) = "continue;"
 	|compileStmnt(Ast.Break) = "break;"
+	
+	|compileStmnt(Ast.Const(num)) = Int.toString(num)
+	|compileStmnt(Ast.Bool (x)) = (case x of "TRUE" => "true" | "FALSE" => "false")
+	|compileStmnt(Ast.Op(expr1, binOp, expr2) = let
+							val sign = (case binOp of
+						 Ast.Plus => "+"
+						|Ast.Minus => "-"
+						|Ast.Times => "*"
+						|Ast.Divide => "/"
+						|Ast.Mod => "%"
+						|Ast.Eq => "==="
+						|Ast.Neq => "!="
+						|Ast.Lt => "<"
+						|Ast.Le => "<="
+						|Ast.Gt => ">"
+						|Ast.Ge => ">=")
+							in
+							expr1 ^ " " ^ sign ^ " " ^ expr2
+							end
+	|compileStmnt(Ast.Neg) = "!"
+	|compileStmnt(Ast.UMinus) = "-"
+	|compileStmnt(Ast.Int) = "var "
+	|compileStmnt(Ast.Strint) = "var "
+	
 end
