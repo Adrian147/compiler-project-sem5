@@ -11,11 +11,13 @@ struct
                  | And | Or
 
   datatype uniOp = Neg | UMinus
+  
+  datatype boolean = TRUE | FALSE
 
   (* The abstract syntax for expressions *)
   datatype expr  = Id of id
                  | Const of int
-                 | Bool
+                 | Bool of boolean
   	             | Op of expr * binOp * expr
                  | Up of uniOp * expr
 

@@ -57,8 +57,8 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | BREAK                               (Ast.Break)
 
 expr : NUM                 (Ast.Const NUM)
-     | TRUE                (Ast.Bool)
-     | FALSE               (Ast.Bool)
+     | TRUE                (Ast.Bool Ast.TRUE)
+     | FALSE               (Ast.Bool Ast.FALSE)
      | expr binOp expr     (Ast.Op(expr, binOp, expr))
      | uniOp expr          (Ast.Up(uniOp, expr))
 
