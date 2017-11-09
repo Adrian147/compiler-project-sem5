@@ -3,7 +3,8 @@
     EOF
   | ID of string
   | NUM of int
-  | INT 
+  | STR of string
+  | INT
   | STRING
   | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
@@ -46,7 +47,11 @@
 program	: stmnts                                 (Ast.Program stmnts)
 
 stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
-	   | statement							    ([statement])
+	     | statement							                ([statement])
+       | FOR statement SEMICOLON expr
+         SEMICOLON statement DO stmnts END      (statement ::
+                                                 [Ast.While(expr,stmnts @
+                                                            [statement])])
 
 statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | dataType ID                         (Ast.VarDecl(dataType, Ast.ID ID))
@@ -59,12 +64,13 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
 
 expr : uniOp expr          (Ast.Up(uniOp, expr))
      | expterm binOp expr  (Ast.Op(expterm, binOp, expr))
-	 | expterm				(expterm)
+	   | expterm				     (expterm)
 
-expterm: NUM                 (Ast.Const NUM)
-     | TRUE                (Ast.Bool Ast.TRUE)
-     | FALSE               (Ast.Bool Ast.FALSE)
-     | ID					(Ast.Id(Ast.ID ID))
+expterm : NUM                   (Ast.Const NUM)
+        | STR                   (Ast.Str STR)
+        | TRUE                  (Ast.Bool Ast.TRUE)
+        | FALSE                 (Ast.Bool Ast.FALSE)
+        | ID					          (Ast.Id(Ast.ID ID))
 
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)

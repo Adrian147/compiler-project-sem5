@@ -1,4 +1,4 @@
-signature TOKENS = 
+signature TOKENS =
 sig
 type pos
 type token

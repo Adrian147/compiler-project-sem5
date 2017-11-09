@@ -17,21 +17,22 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 
 \n	            => (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
 "break"	        => (Tokens.BREAK(yypos, yypos + 5));
-"continue"	    => (Tokens.CONTINUE(yypos, yypos + 8));
-"||"	        => (Tokens.OR(yypos, yypos + 2));
-"&&"	        => (Tokens.AND(yypos, yypos + 2));
+"continue"      => (Tokens.CONTINUE(yypos, yypos + 8));
+"||"	          => (Tokens.OR(yypos, yypos + 2));
+"&&"	          => (Tokens.AND(yypos, yypos + 2));
 "~"	            => (Tokens.UMINUS(yypos, yypos + 1));
 "!"	            => (Tokens.NEG(yypos, yypos + 1));
-">="	        => (Tokens.GE(yypos, yypos + 2));
+">="	          => (Tokens.GE(yypos, yypos + 2));
 ">"	            => (Tokens.GT(yypos, yypos + 1));
-"<="	        => (Tokens.LE(yypos, yypos + 2));
+"<="            => (Tokens.LE(yypos, yypos + 2));
 "<"	            => (Tokens.LT(yypos, yypos + 1));
-"!="	        => (Tokens.NEQ(yypos, yypos + 2));
+"!="	          => (Tokens.NEQ(yypos, yypos + 2));
 "="	            => (Tokens.EQ(yypos, yypos + 1));
-":="	        => (Tokens.ASSIGN(yypos, yypos + 2));
-"do"	        => (Tokens.DO(yypos, yypos+2));
+":="	          => (Tokens.ASSIGN(yypos, yypos + 2));
+"do"	          => (Tokens.DO(yypos, yypos+2));
 "while"	        => (Tokens.WHILE(yypos, yypos+5));
-"if"	        => (Tokens.IF(yypos, yypos+2));
+"for"           => (Tokens.FOR(yypos, yypos+3));
+"if"	          => (Tokens.IF(yypos, yypos+2));
 "then"	        => (Tokens.THEN(yypos, yypos+4));
 "else"	        => (Tokens.ELSE(yypos, yypos+4));
 "end"           => (Tokens.END(yypos, yypos+3));
@@ -43,9 +44,8 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 "+"	            => (Tokens.PLUS(yypos, yypos + 1));
 "%"	            => (Tokens.MOD(yypos, yypos + 1));
 ";"	            => (Tokens.SEMICOLON(yypos,yypos+1));
-"EOF"	        => (Tokens.EOF(yypos, yypos+3));
-" "		        => (continue());
-[0-9]+			=> (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
+"EOF"	          => (Tokens.EOF(yypos, yypos+3));
+" "		          => (continue());
+[0-9]+			    => (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
 [a-z][a-z0-9_]* => (Tokens.ID(yytext, yypos, yypos + (size yytext)));
 .               => (ErrorMsg.error yypos ("illegal character " ^ yytext); continue());
-
