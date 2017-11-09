@@ -16,8 +16,6 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 %%
 
 \n	            => (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
-[0-9]+			=> (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
-[a-z][a-z0-9_]* => (Tokens.ID(yytext, yypos, yypos + (size yytext)));
 "break"	        => (Tokens.BREAK(yypos, yypos + 5));
 "continue"	    => (Tokens.CONTINUE(yypos, yypos + 8));
 "||"	        => (Tokens.OR(yypos, yypos + 2));
@@ -47,5 +45,7 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 ";"	            => (Tokens.SEMICOLON(yypos,yypos+1));
 "EOF"	        => (Tokens.EOF(yypos, yypos+3));
 " "		        => (continue());
+[0-9]+			=> (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
+[a-z][a-z0-9_]* => (Tokens.ID(yytext, yypos, yypos + (size yytext)));
 .               => (ErrorMsg.error yypos ("illegal character " ^ yytext); continue());
 
