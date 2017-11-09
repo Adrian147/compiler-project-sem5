@@ -64,6 +64,7 @@ expr : uniOp expr          (Ast.Up(uniOp, expr))
 expterm: NUM                 (Ast.Const NUM)
      | TRUE                (Ast.Bool Ast.TRUE)
      | FALSE               (Ast.Bool Ast.FALSE)
+     | ID					(Ast.Id(Ast.ID ID))
 
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)
