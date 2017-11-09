@@ -1,2 +1,3 @@
-IF (123 EQ 152) THEN 
-DO WHILE (a GT 0) { asd };
+a := 2;
+b := 3;
+c := 1 + a

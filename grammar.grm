@@ -16,6 +16,7 @@
        | stmnts of Ast.statement list
        | statement of Ast.statement
        | expr of Ast.expr
+       | expterm of Ast.expr
        | binOp of Ast.binOp
        | uniOp of Ast.uniOp
        | dataType of Ast.dataType
@@ -45,7 +46,7 @@
 program	: stmnts                                 (Ast.Program stmnts)
 
 stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
-	   | statement SEMICOLON				    ([statement])
+	   | statement							    ([statement])
 
 statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | dataType ID                         (Ast.VarDecl(dataType, Ast.ID ID))
@@ -56,11 +57,14 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | CONTINUE                            (Ast.Continue)
           | BREAK                               (Ast.Break)
 
-expr : NUM                 (Ast.Const NUM)
+expr : uniOp expr          (Ast.Up(uniOp, expr))
+     | expterm binOp expr  (Ast.Op(expterm, binOp, expr))
+	 | expterm				(expterm)
+
+expterm: NUM                 (Ast.Const NUM)
      | TRUE                (Ast.Bool Ast.TRUE)
      | FALSE               (Ast.Bool Ast.FALSE)
-     | expr binOp expr     (Ast.Op(expr, binOp, expr))
-     | uniOp expr          (Ast.Up(uniOp, expr))
+     | ID					(Ast.Id(Ast.ID ID))
 
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)

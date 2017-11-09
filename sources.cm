@@ -1,0 +1,11 @@
+$(SML_LIB)/basis/basis.mlb
+$(SML_LIB)/basis/unsafe.mlb
+$(SML_LIB)/mlyacc-lib/mlyacc-lib.mlb
+
+group is
+
+ast.sml
+lexerr.sml
+grammar.grm
+lexer.lex
+parse.sml
