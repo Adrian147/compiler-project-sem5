@@ -15,4 +15,6 @@ struct
        in TextIO.closeIn file;
        absyn
       end handle LrParser.ParseError => raise ErrorMsg.Error
-end
+end;
+
+Parse.parse "sample.txt";

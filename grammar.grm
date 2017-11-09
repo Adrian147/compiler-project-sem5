@@ -16,7 +16,7 @@
        | stmnts of Ast.statement list
        | statement of Ast.statement
        | expr of Ast.expr
-       | expterm
+       | expterm of Ast.expr
        | binOp of Ast.binOp
        | uniOp of Ast.uniOp
        | dataType of Ast.dataType
@@ -59,7 +59,7 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
 
 expr : uniOp expr          (Ast.Up(uniOp, expr))
      | expterm binOp expr  (Ast.Op(expterm, binOp, expr))
-	 | expterm				()
+	 | expterm				(expterm)
 
 expterm: NUM                 (Ast.Const NUM)
      | TRUE                (Ast.Bool Ast.TRUE)
