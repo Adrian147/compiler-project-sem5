@@ -13,9 +13,10 @@ struct
 	  val lexer = LrParser.Stream.streamify (Lex.makeLexer get)
 	  val (absyn, _) = FooP.parse(30,lexer,parseerror,())
        in TextIO.closeIn file;
+       print (Translate.starttranslate(absyn));
        absyn
       end handle LrParser.ParseError => raise ErrorMsg.Error
 end;
 
 val x = Parse.parse "sample.txt";
-Translate.starttranslate(x);
+

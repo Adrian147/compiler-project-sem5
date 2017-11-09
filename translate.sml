@@ -29,7 +29,7 @@ fun compileExp(Ast.Const(num)) = Int.toString(num)
 (*	|compileExp _ = "Unknown Error!" *)
 
 fun compileStmntList(x :: xs) = compileStmnt(x) ^ compileStmntList(xs)
-   |compileStmntList [] = ""
+   |compileStmntList [] = "\n/*Compiled Successfully*/"
 
 and compileStmnt(Ast.VarAssn (Ast.ID(x), y)) = x ^ " = " ^ compileExp(y) ^ ";\n"
    |compileStmnt(Ast.VarDecl (x, Ast.ID(y))) = (case x of 
