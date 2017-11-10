@@ -1,0 +1,8 @@
+int a;
+int b;
+a:=0;
+b:= 3;
+while a < b do print "while" + a; a := a + 1 end;
+a := 0;
+do print "dowhile" + a; a := a + 1 while a < b end;
+for a:=0 : a < b : a := a + 1 do print "for" + a end
