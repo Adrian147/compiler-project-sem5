@@ -28,8 +28,8 @@ struct
 					end
 		| compileExp(Ast.Up (uniop, expr)) =
 				(case uniop of
-						Ast.Neg => "!"
-					|	Ast.UMinus => "-")
+						Ast.Neg => "!" ^ compileExp(expr)
+					|	Ast.UMinus => "-") ^ compileExp(expr)
 		| compileExp(Ast.Readint (prmpt)) = "parseInt(prompt(" ^ prmpt ^ "))"
 		(*	| compileExp _ = "Unknown Error!" *)
 
