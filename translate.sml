@@ -30,6 +30,7 @@ struct
 				(case uniop of
 						Ast.Neg => "!"
 					|	Ast.UMinus => "-")
+		| compileExp(Ast.Readint (prmpt)) = "parseInt(prompt(" ^ prmpt ^ "))"
 		(*	| compileExp _ = "Unknown Error!" *)
 
 	fun compileStmntList (x :: xs) = compileStmnt(x) ^ compileStmntList(xs)
@@ -55,6 +56,7 @@ struct
 				" \n}\n" ^	"else\n {" ^ compileStmntList(elstmnts) ^ "}"
 		| compileStmnt(Ast.Continue) = "continue;"
 		| compileStmnt(Ast.Break) = "break;"
+		(*| compileStmnt(Ast.Readstr (prmpt)) = "(prompt(" ^ prmpt ^ "))" *)
  		(*	|compileStmnt _ = "Unknown Error!"*)
 
 		(*	|compileStmnt(Ast.Int) = "var "

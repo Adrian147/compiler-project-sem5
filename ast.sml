@@ -21,6 +21,7 @@ struct
                  | Bool of boolean
   	             | Op of expr * binOp * expr
                  | Up of uniOp * expr
+                 | Readint of string
 
 
   (*Allow {Compound statements ?} *)
