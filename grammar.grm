@@ -4,8 +4,8 @@
   | ID of string
   | NUM of int
   | STR of string
-  | INT
-  | STRING
+  | DEFINT
+  | DEFSTR
   | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | UMINUS | NEG
@@ -88,5 +88,5 @@ binOp : PLUS                (Ast.Plus)
 uniOp : NEG                 (Ast.Neg)
       | UMINUS              (Ast.UMinus)
 
-dataType : INT              (Ast.Int)
-         | STRING           (Ast.String)
+dataType : DEFINT              (Ast.Int)
+         | DEFSTR	           (Ast.String)

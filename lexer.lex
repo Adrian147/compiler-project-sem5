@@ -45,6 +45,8 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 "+"	            => (Tokens.PLUS(yypos, yypos + 1));
 "%"	            => (Tokens.MOD(yypos, yypos + 1));
 ";"	            => (Tokens.SEMICOLON(yypos,yypos+1));
+"int"			=> (Tokens.DEFINT(yypos,yypos+3));
+"string"		=> (Tokens.DEFSTR(yypos,yypos+3));
 "EOF"	          => (Tokens.EOF(yypos, yypos+3));
 " "		          => (continue());
 [0-9]+			    => (Tokens.NUM(valOf(Int.fromString(yytext)), yypos, yypos + (size yytext)));
