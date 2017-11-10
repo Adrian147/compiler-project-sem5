@@ -1,3 +1,9 @@
+fun writeFile filename content =
+    let val fd = TextIO.openOut filename
+        val _ = TextIO.output (fd, content) handle e => (TextIO.closeOut fd; raise e)
+        val _ = TextIO.closeOut fd
+    in () end
+
 structure Parse : sig val parse : string -> Ast.program end =
 struct
   structure FooLrVals = FooLrValsFun(structure Token = LrParser.Token)
@@ -12,8 +18,9 @@ struct
 	  fun parseerror(s,p1,p2) = ErrorMsg.error p1 s
 	  val lexer = LrParser.Stream.streamify (Lex.makeLexer get)
 	  val (absyn, _) = FooP.parse(30,lexer,parseerror,())
+	  val translated = (Translate.starttranslate(absyn))
+	  val result = writeFile (filename ^ ".js") translated
        in TextIO.closeIn file;
-       print (Translate.starttranslate(absyn));
        absyn
       end handle LrParser.ParseError => raise ErrorMsg.Error
 end;

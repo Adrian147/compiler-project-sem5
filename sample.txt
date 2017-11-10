@@ -1,11 +1,19 @@
+int a;
+int b;
+int c;
+int d;
+
 a := 2;
-b := 3;
+b := 10;
 c := 1 + a;
 d := c;
 
 print c;
 
-if true then
+while a < b do
 c := a + 2;
-a := 1
+if c % 2 = 0 then
+print c
+end;
+a := a + 1
 end
