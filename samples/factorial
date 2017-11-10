@@ -1,5 +1,6 @@
 int a;
 int b;
+fun factorial :
 a := 1;
 b := readint "Enter a number";
 
@@ -12,3 +13,6 @@ end;
 
 print "factorial is";
 print a
+end;
+
+call factorial

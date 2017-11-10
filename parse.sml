@@ -25,5 +25,5 @@ struct
       end handle LrParser.ParseError => raise ErrorMsg.Error
 end;
 
-val runcomp = case CommandLine.arguments() of [x] => let val par =  Parse.parse x; in print ("Done!\n") end | _ => print ("No file given! \n")
+val runcomp = case CommandLine.arguments() of [x] => let val par =  Parse.parse x; in print ("\n") end | _ => print ("No file given! \n")
 

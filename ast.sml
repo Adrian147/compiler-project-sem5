@@ -33,6 +33,8 @@ struct
                       | IFT of expr * statement list
                       | IFTE of expr * statement list * statement list
                       | Forloop of statement * expr * statement * statement list
+                      | Func of id * statement list
+                      | Call of id
                       | Continue
                       | Break
 
