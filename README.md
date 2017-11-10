@@ -18,6 +18,7 @@ This can be further executed using Node.js or the Web Browser.
 * do while loop
 * reading input from user
 * printing output to user
+* user-defined functions
 
 ## Code files:
 - lexer.lex     : Lexing tokens for the language
