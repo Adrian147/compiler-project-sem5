@@ -10,7 +10,7 @@ This can be further executed using Node.js or the Web Browser.
 ### Features
 * mutable variables of type int and string
 * arithmetic operations: + - / * % :=
-* boolean operations: > < >= <= != = ! && || 
+* conditional operations: > < >= <= != = ! && || 
 * if then clause
 * if then else clause
 * for loop
