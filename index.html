@@ -2,12 +2,23 @@
 <html>
 <head>
 <title>Compiler Project</title>
-<script src="sample.txt.js"></script>
+<!--<script src="sample.txt.js"></script>-->
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ /* run code here */
+var script = document.createElement('script');
+script.src = prompt("Enter the name of js file");
+document.head.appendChild(script);
 
+});
+
+</script>
 </head>
 <body>
 <div style="width:100%; height:100%; text-align:center; vertical-align:middle">
 The Compiler.
 </div>
 </body>
+
 </html>
+
