@@ -64,5 +64,5 @@ struct
 
 	fun starttranslate((prog)) =
 			case prog of Ast.Program(slist) => compileStmntList(slist) ^
-																				"\n/*Generated Code Successfully*/\n";
+																				"\n/*Code Generated Successfully*/\n";
 end

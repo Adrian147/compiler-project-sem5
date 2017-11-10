@@ -3,7 +3,7 @@ int b;
 int c;
 int dasd;
 
-a := 2;
+a := 0;
 b := readint "enter number";
 c := 1 + a;
 dasd := c;
