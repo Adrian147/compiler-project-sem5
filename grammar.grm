@@ -11,7 +11,7 @@
   | UMINUS | NEG
   | TRUE | FALSE
   | IF | THEN | ELSE | WHILE | FOR | DO | END
-  | BREAK | CONTINUE | SEMICOLON | PRINT | READINT | COLON
+  | BREAK | CONTINUE | SEMICOLON | PRINT | READINT | COLON | FUN | CALL
 
 %nonterm program of Ast.program
        | stmnts of Ast.statement list
@@ -61,6 +61,8 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | BREAK                               (Ast.Break)
           | FOR statement COLON expr
          COLON statement DO stmnts END      	(Ast.Forloop(statement1, expr, statement2, stmnts))
+          | FUN ID COLON stmnts END			(Ast.Func(Ast.ID ID, stmnts))
+          | CALL ID							(Ast.Call(Ast.ID ID))
 
 expr : uniOp expr          (Ast.Up(uniOp, expr))
      | expterm binOp expr  (Ast.Op(expterm, binOp, expr))

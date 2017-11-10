@@ -57,6 +57,8 @@ struct
 		| compileStmnt(Ast.Forloop(s1, expr, s2, slist)) = "for(" ^ compileStmnt(s1) ^ " ; " ^ compileExp(expr) ^
 												 " ; " ^ compileStmnt(s2) ^ " )\n { " ^ compileStmntList(slist) ^ " }\n"
 		| compileStmnt(Ast.Continue) = "continue"
+		| compileStmnt(Ast.Func (Ast.ID(fname), stmnts)) = "function " ^ fname ^ "(){\n" ^ compileStmntList(stmnts) ^ "}\n"
+		| compileStmnt(Ast.Call (Ast.ID(fname))) = fname ^ "()"
 		| compileStmnt(Ast.Break) = "break"
 		(*| compileStmnt(Ast.Readstr (prmpt)) = "(prompt(" ^ prmpt ^ "))" *)
  		(*	|compileStmnt _ = "Unknown Error!"*)
