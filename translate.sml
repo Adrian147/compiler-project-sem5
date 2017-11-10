@@ -41,6 +41,7 @@ struct
 				(case x of Ast.Int => "var " ^ y ^ ";\n"
    							 | Ast.String => "var " ^ y ^ ";\n"
    							 )
+		| compileStmnt(Ast.Print(expr)) = "console.log(" ^ compileExp(expr) ^ ");\n"
 	  | compileStmnt(Ast.While(exp, stmnts)) =
 				"while(" ^ compileExp(exp) ^ ")\n {\n" ^ compileStmntList(stmnts) ^
 				" \n}\n"

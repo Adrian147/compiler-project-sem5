@@ -11,7 +11,7 @@
   | UMINUS | NEG
   | TRUE | FALSE
   | IF | THEN | ELSE | WHILE | FOR | DO | END
-  | BREAK | CONTINUE | SEMICOLON
+  | BREAK | CONTINUE | SEMICOLON | PRINT
 
 %nonterm program of Ast.program
        | stmnts of Ast.statement list
@@ -55,6 +55,7 @@ stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
 
 statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | dataType ID                         (Ast.VarDecl(dataType, Ast.ID ID))
+          | PRINT expr                          (Ast.Print expr)
           | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))
           | DO stmnts WHILE expr END            (Ast.DoWhile(stmnts, expr))
           | IF expr THEN stmnts END             (Ast.IFT(expr, stmnts))

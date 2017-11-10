@@ -1,4 +1,4 @@
-# Initial Commit taken from Prof P Kurur. 
+# Initial Commit taken from Prof P Kurur.
 # @https://bitbucket.org/piyush-kurur/compilers/src
 
 compiler
@@ -8,3 +8,5 @@ compiler
 *.grm.sml
 *.lex.sml
 *.x86-linux
+*.js
+*.diff

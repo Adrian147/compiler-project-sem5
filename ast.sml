@@ -26,6 +26,7 @@ struct
   (*Allow {Compound statements ?} *)
   datatype statement  = VarAssn of id * expr
                       | VarDecl of dataType * id
+                      | Print of expr
                       | While of expr * statement list
                       | DoWhile of statement list * expr
                       | IFT of expr * statement list
