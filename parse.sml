@@ -10,13 +10,23 @@ struct
 	  val file = TextIO.openIn filename
 	  fun get _ = TextIO.input file
 	  fun parseerror(s,p1,p2) = ErrorMsg.error p1 s
-	  val lexer = LrParser.Stream.streamify (Lex.makeLexer get)
-	  val (absyn, _) = FooP.parse(30,lexer,parseerror,())
+	  val lexer    = LrParser.Stream.streamify (Lex.makeLexer get)
+	  val (ast, _) = FooP.parse(30,lexer,parseerror,())
+
+    val jstr   = Translate.starttranslate(ast)
+    val fout   = TextIO.openOut (filename ^ ".js")
+    val fwrite = TextIO.output(fout, jstr)
        in TextIO.closeIn file;
-       print (Translate.starttranslate(absyn));
-       absyn
+       print (Translate.starttranslate(ast));
+       ast
       end handle LrParser.ParseError => raise ErrorMsg.Error
 end;
 
-val x = Parse.parse "sample.txt";
 
+val x = case CommandLine.arguments() of
+	             [x] => let
+                          val y = Parse.parse x
+                      in
+                          print "\n/*Generated Code Successfully*/\n"
+                      end
+            |   _  => print "Use filename as parameter\n";
