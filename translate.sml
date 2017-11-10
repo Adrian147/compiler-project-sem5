@@ -32,32 +32,50 @@ struct
 					|	Ast.UMinus => "-")
 		| compileExp(Ast.Readint (prmpt)) = "parseInt(prompt(" ^ prmpt ^ "))"
 		(*	| compileExp _ = "Unknown Error!" *)
+	fun p_tab 0 = ""
+  	| p_tab n = "    " ^ p_tab(n - 1)
 
-	fun compileStmntList (x :: xs) = compileStmnt(x) ^ ";\n" ^ compileStmntList(xs)
-	  |	compileStmntList [] 			 = ""
+		fun compileStmntList ((x :: xs),ltab) =
+	 			p_tab(ltab) ^ compileStmnt(x, ltab) ^ compileStmntList(xs, ltab)
 
-	and compileStmnt(Ast.VarAssn (Ast.ID(x), y)) =
-				x ^ " = " ^ compileExp(y)
-    | compileStmnt(Ast.VarDecl (x, Ast.ID(y))) =
-				(case x of Ast.Int => "var " ^ y
-   							 | Ast.String => "var " ^ y
+   	  |	compileStmntList ([], 			 _) = ""
+
+		and compileStmnt(Ast.VarAssn (Ast.ID(x), y), _) =
+			 		x ^ " = " ^ compileExp(y) ^ ";\n"
+
+    | compileStmnt(Ast.VarDecl (x, Ast.ID(y)), _) =
+				(case x of Ast.Int => "var " ^ y ^ ";\n"
+   							 | Ast.String => "var " ^ y ^ ";\n"
    							 )
-		| compileStmnt(Ast.Print(expr)) = "console.log(" ^ compileExp(expr) ^ ")"
-	  | compileStmnt(Ast.While(exp, stmnts)) =
-				"while(" ^ compileExp(exp) ^ ")\n {\n" ^ compileStmntList(stmnts) ^
-				" \n}\n"
-		| compileStmnt(Ast.DoWhile(stmnts, exp)) =
-				"do \n {\n" ^ compileStmntList(stmnts) ^"\n } while("^ compileExp(exp) ^
-				");\n"
-		| compileStmnt(Ast.IFT(exp, stmnts)) =
-				"if(" ^ compileExp(exp) ^ ")\n {\n" ^ compileStmntList(stmnts) ^ " \n}\n"
-		| compileStmnt(Ast.IFTE(exp, thstmnts, elstmnts)) =
-				"if(" ^ compileExp(exp) ^ ")\n {\n" ^	compileStmntList(thstmnts) ^
-				" \n}\n" ^	"else\n {" ^ compileStmntList(elstmnts) ^ "}"
-		| compileStmnt(Ast.Forloop(s1, expr, s2, slist)) = "for(" ^ compileStmnt(s1) ^ " ; " ^ compileExp(expr) ^
-												 " ; " ^ compileStmnt(s2) ^ " )\n { " ^ compileStmntList(slist) ^ " }\n"
-		| compileStmnt(Ast.Continue) = "continue"
-		| compileStmnt(Ast.Break) = "break"
+
+		| compileStmnt(Ast.Print(expr), _) = "console.log(" ^ compileExp(expr) ^ ");\n"
+
+	  | compileStmnt(Ast.While(exp, stmnts), ltab) =
+			"while(" ^ compileExp(exp) ^ ") {\n" ^ compileStmntList(stmnts, ltab + 1)
+						^ p_tab(ltab) ^"}\n"
+
+		| compileStmnt(Ast.DoWhile(stmnts, exp), ltab) =
+				"do {\n" ^ compileStmntList(stmnts, ltab + 1) ^ p_tab(ltab) ^
+						"} while("^ compileExp(exp) ^
+						");\n"
+
+		| compileStmnt(Ast.IFT(exp, stmnts), ltab) =
+				"if(" ^ compileExp(exp) ^ ") {\n" ^ compileStmntList(stmnts, ltab + 1) ^
+						p_tab(ltab) ^ "}\n"
+
+		| compileStmnt(Ast.IFTE(exp, thstmnts, elstmnts), ltab) =
+				"if(" ^ compileExp(exp) ^ ") {\n" ^	compileStmntList(thstmnts, ltab + 1) ^
+						p_tab(ltab) ^ "} else {\n" ^ compileStmntList(elstmnts, ltab + 1) ^
+						p_tab(ltab) ^ "}\n"
+
+		| compileStmnt(Ast.Forloop(s1, expr, s2, slist), ltab) =
+		     "for(" ^ compileStmnt(s1, 0) ^ compileExp(expr) ^
+				"; " ^ compileStmnt(s2, 0) ^ ") {\n" ^ compileStmntList(slist, ltab + 1) ^
+				p_tab(ltab) ^ " }\n"
+
+		| compileStmnt(Ast.Continue, _) = "continue;\n"
+
+		| compileStmnt(Ast.Break, _) = "break;\n"
 		(*| compileStmnt(Ast.Readstr (prmpt)) = "(prompt(" ^ prmpt ^ "))" *)
  		(*	|compileStmnt _ = "Unknown Error!"*)
 
@@ -65,5 +83,5 @@ struct
 				|compileStmnt(Ast.String) = "var "*)
 
 	fun starttranslate((prog)) =
-			case prog of Ast.Program(slist) => compileStmntList(slist);
+			case prog of Ast.Program(slist) => compileStmntList(slist, 0);
 end
