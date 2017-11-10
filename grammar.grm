@@ -4,7 +4,6 @@
   | ID of string
   | NUM of int
   | STR of string
-  | STRING of string
   | DEFINT
   | DEFSTR
   | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
@@ -73,7 +72,7 @@ expterm : NUM                   (Ast.Const NUM)
         | TRUE                  (Ast.Bool Ast.TRUE)
         | FALSE                 (Ast.Bool Ast.FALSE)
         | ID					          (Ast.Id(Ast.ID ID))
-        | READINT STRING			(Ast.Readint STRING)
+        | READINT STR			(Ast.Readint STR)
 
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)

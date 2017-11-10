@@ -1,15 +1,12 @@
-b := readint "gofor";
 int a;
 int b;
 int c;
 int dasd;
 
 a := 2;
-b := readint "go for";
+b := readint "enter number";
 c := 1 + a;
 dasd := c;
-
-print c;
 
 while a < b do
 c := a + 2;
@@ -17,4 +14,6 @@ if c % 2 = 0 then
 print c
 end;
 a := a + 1
-end
+end;
+
+print "asd"
