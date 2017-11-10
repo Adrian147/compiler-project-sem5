@@ -1,11 +1,22 @@
-a := 2;
-b := 3;
+int a;
+int b;
+int c;
+int dasd;
+
+a := 0;
+b := readint "enter number";
 c := 1 + a;
-d := c;
+dasd := c;
 
-print c;
-
-if true then
+for a:= 0 : a < b : a := a + 1 do
 c := a + 2;
-a := 1
+
+if c % 2 = 0 then
+print c
+else
+print a
 end
+
+end;
+
+print "asd"

@@ -4,14 +4,14 @@
   | ID of string
   | NUM of int
   | STR of string
-  | INT
-  | STRING
+  | DEFINT
+  | DEFSTR
   | PLUS | MINUS | TIMES | DIVIDE | MOD | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | UMINUS | NEG
   | TRUE | FALSE
   | IF | THEN | ELSE | WHILE | FOR | DO | END
-  | BREAK | CONTINUE | SEMICOLON | PRINT
+  | BREAK | CONTINUE | SEMICOLON | PRINT | READINT | COLON
 
 %nonterm program of Ast.program
        | stmnts of Ast.statement list
@@ -48,10 +48,7 @@ program	: stmnts                                 (Ast.Program stmnts)
 
 stmnts : statement SEMICOLON stmnts	            (statement :: stmnts)
 	     | statement							                ([statement])
-       | FOR statement SEMICOLON expr
-         SEMICOLON statement DO stmnts END      (statement ::
-                                                 [Ast.While(expr,stmnts @
-                                                            [statement])])
+       
 
 statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | dataType ID                         (Ast.VarDecl(dataType, Ast.ID ID))
@@ -59,9 +56,11 @@ statement : ID ASSIGN expr                      (Ast.VarAssn(Ast.ID ID, expr))
           | WHILE expr DO stmnts END            (Ast.While(expr, stmnts))
           | DO stmnts WHILE expr END            (Ast.DoWhile(stmnts, expr))
           | IF expr THEN stmnts END             (Ast.IFT(expr, stmnts))
-          | IF expr THEN stmnts ELSE stmnts END (Ast.IFTE(expr, stmnts, stmnts))
+          | IF expr THEN stmnts ELSE stmnts END (Ast.IFTE(expr, stmnts1, stmnts2))
           | CONTINUE                            (Ast.Continue)
           | BREAK                               (Ast.Break)
+          | FOR statement COLON expr
+         COLON statement DO stmnts END      	(Ast.Forloop(statement1, expr, statement2, stmnts))
 
 expr : uniOp expr          (Ast.Up(uniOp, expr))
      | expterm binOp expr  (Ast.Op(expterm, binOp, expr))
@@ -72,6 +71,7 @@ expterm : NUM                   (Ast.Const NUM)
         | TRUE                  (Ast.Bool Ast.TRUE)
         | FALSE                 (Ast.Bool Ast.FALSE)
         | ID					          (Ast.Id(Ast.ID ID))
+        | READINT STR			(Ast.Readint STR)
 
 binOp : PLUS                (Ast.Plus)
       | MINUS               (Ast.Minus)
@@ -88,5 +88,5 @@ binOp : PLUS                (Ast.Plus)
 uniOp : NEG                 (Ast.Neg)
       | UMINUS              (Ast.UMinus)
 
-dataType : INT              (Ast.Int)
-         | STRING           (Ast.String)
+dataType : DEFINT              (Ast.Int)
+         | DEFSTR	           (Ast.String)

@@ -21,6 +21,7 @@ struct
                  | Bool of boolean
   	             | Op of expr * binOp * expr
                  | Up of uniOp * expr
+                 | Readint of string
 
 
   (*Allow {Compound statements ?} *)
@@ -31,6 +32,7 @@ struct
                       | DoWhile of statement list * expr
                       | IFT of expr * statement list
                       | IFTE of expr * statement list * statement list
+                      | Forloop of statement * expr * statement * statement list
                       | Continue
                       | Break
 
