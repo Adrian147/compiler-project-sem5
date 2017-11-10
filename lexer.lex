@@ -45,6 +45,7 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 "+"	            => (Tokens.PLUS(yypos, yypos + 1));
 "%"	            => (Tokens.MOD(yypos, yypos + 1));
 ";"	            => (Tokens.SEMICOLON(yypos,yypos+1));
+":"	            => (Tokens.COLON(yypos,yypos+1));
 "int"			=> (Tokens.DEFINT(yypos,yypos+3));
 "string"		=> (Tokens.DEFSTR(yypos,yypos+3));
 "readint"		=> (Tokens.READINT(yypos,yypos+7));

@@ -32,6 +32,7 @@ struct
                       | DoWhile of statement list * expr
                       | IFT of expr * statement list
                       | IFTE of expr * statement list * statement list
+                      | Forloop of statement * expr * statement * statement list
                       | Continue
                       | Break
 

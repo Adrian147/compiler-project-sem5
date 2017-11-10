@@ -8,12 +8,15 @@ b := readint "enter number";
 c := 1 + a;
 dasd := c;
 
-while a < b do
+for a:= 0 : a < b : a := a + 1 do
 c := a + 2;
+
 if c % 2 = 0 then
 print c
-end;
-a := a + 1
+else
+print a
+end
+
 end;
 
 print "asd"

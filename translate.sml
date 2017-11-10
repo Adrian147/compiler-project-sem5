@@ -33,16 +33,16 @@ struct
 		| compileExp(Ast.Readint (prmpt)) = "parseInt(prompt(" ^ prmpt ^ "))"
 		(*	| compileExp _ = "Unknown Error!" *)
 
-	fun compileStmntList (x :: xs) = compileStmnt(x) ^ compileStmntList(xs)
+	fun compileStmntList (x :: xs) = compileStmnt(x) ^ ";\n" ^ compileStmntList(xs)
 	  |	compileStmntList [] 			 = ""
 
 	and compileStmnt(Ast.VarAssn (Ast.ID(x), y)) =
-				x ^ " = " ^ compileExp(y) ^ ";\n"
+				x ^ " = " ^ compileExp(y) 
     | compileStmnt(Ast.VarDecl (x, Ast.ID(y))) =
-				(case x of Ast.Int => "var " ^ y ^ ";\n"
-   							 | Ast.String => "var " ^ y ^ ";\n"
+				(case x of Ast.Int => "var " ^ y 
+   							 | Ast.String => "var " ^ y 
    							 )
-		| compileStmnt(Ast.Print(expr)) = "console.log(" ^ compileExp(expr) ^ ");\n"
+		| compileStmnt(Ast.Print(expr)) = "console.log(" ^ compileExp(expr) ^ ")"
 	  | compileStmnt(Ast.While(exp, stmnts)) =
 				"while(" ^ compileExp(exp) ^ ")\n {\n" ^ compileStmntList(stmnts) ^
 				" \n}\n"
@@ -54,8 +54,10 @@ struct
 		| compileStmnt(Ast.IFTE(exp, thstmnts, elstmnts)) =
 				"if(" ^ compileExp(exp) ^ ")\n {\n" ^	compileStmntList(thstmnts) ^
 				" \n}\n" ^	"else\n {" ^ compileStmntList(elstmnts) ^ "}"
-		| compileStmnt(Ast.Continue) = "continue;"
-		| compileStmnt(Ast.Break) = "break;"
+		| compileStmnt(Ast.Forloop(s1, expr, s2, slist)) = "for(" ^ compileStmnt(s1) ^ " ; " ^ compileExp(expr) ^
+												 " ; " ^ compileStmnt(s2) ^ " )\n { " ^ compileStmntList(slist) ^ " }\n"
+		| compileStmnt(Ast.Continue) = "continue"
+		| compileStmnt(Ast.Break) = "break"
 		(*| compileStmnt(Ast.Readstr (prmpt)) = "(prompt(" ^ prmpt ^ "))" *)
  		(*	|compileStmnt _ = "Unknown Error!"*)
 
