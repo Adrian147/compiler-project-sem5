@@ -1,0 +1,14 @@
+int a;
+int b;
+a := 1;
+b := readint "enter a number";
+
+while b > 1 do
+
+a := a * b;
+b := b - 1
+
+end;
+
+print "factorial is";
+print a
